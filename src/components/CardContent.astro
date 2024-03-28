@@ -1,0 +1,19 @@
+---
+import { marked } from 'marked';
+import '../styles/markdown.css';
+marked.setOptions({
+  breaks: true,
+});
+
+
+// Función para convertir Markdown a HTML
+const renderMarkdown = (markdown) => {
+  return marked.parse(markdown);
+};
+
+// Obtener el contenido de Markdown como una prop
+const { content } = Astro.props;
+const htmlContent = renderMarkdown(content);
+---
+
+<div class="markdown-content text-2xl" set:html={htmlContent}></div>

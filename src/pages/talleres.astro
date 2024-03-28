@@ -1,0 +1,81 @@
+---
+import CardContent from '../components/CardContent';
+import NavLayout from '../layouts/NavLayout.astro';
+import '../styles/services.css'; // Importamos el archivo de estilos para los servicios
+import type { Taller } from '../types';
+
+// Fetch de los talleres de formación desde la API
+const response = await fetch(import.meta.env.SECRET_API_URL + '/talleres');
+const talleres = (await response.json()).data;
+---
+
+<NavLayout title='Talleres de Formación'>
+  <main class="container mx-auto p-8">
+    <div class="container mx-auto">
+      <h1 class="text-4xl font-bold text-dark-brown">Talleres de Formación</h1>
+    </div>
+    <section class="p-8">
+      <h2 class="text-2xl mb-3">Estimulamos el emprendimiento de nuestras estudiantes con:</h2>
+      <div class="list-container">
+        {
+          talleres?.length === 0 && <p>No hay talleres de formación para mostrar en este momento</p>
+        }
+        {
+          talleres && talleres.map((service: Taller) => (
+            <div class="list-item">
+              <div class="content">
+                <h3 class="text-xl font-bold text-dark-brown">{service.attributes.title}</h3>
+                <p>{service.attributes.description}</p>
+              </div>
+              {
+                service.attributes.image && <img src={service.attributes.image} alt={service.attributes.title} class="service-image" />
+              }
+              {
+                service.attributes.image == undefined && <img src="https://i.postimg.cc/Ls4S4GCW/divinas-adoratrices-logo.jpg" alt={service.attributes.title} class="service-image" />
+              }
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+</NavLayout>
+
+<style>
+  .list-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 0 auto;
+    padding: 0;
+    width: 70%; /* Ancho ajustado al 70% */
+  }
+
+  .list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .list-item .content {
+    flex: 1;
+    padding: 0 2rem;
+  }
+
+  .service-image {
+    width: 400px;
+    height: auto;
+    margin: 1rem;
+  }
+
+  .content p {
+    white-space: pre-line; /* Preservar saltos de línea */
+  }
+
+  .text-dark-brown {
+    color: #401665;
+  }
+</style>

@@ -1,0 +1,108 @@
+---
+import NavLayout from '../layouts/NavLayout.astro';
+import type { Entity } from '../types'
+
+const response = await fetch(import.meta.env.SECRET_API_URL + '/entidads')
+const entities: Entity[] = (await response.json()).data
+
+// Filtrado de entidades
+const benefactors = entities.filter(entity => entity.attributes.type === "Benefactor");
+const alliances = entities.filter(entity => entity.attributes.type === "Alianza");
+const others = entities.filter(entity => entity.attributes.type === null);
+---
+
+<NavLayout title='Trabajo en red'>
+    <main class="container mx-auto p-8">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-bold text-purple">Trabajo en red</h1>
+        </div>
+        <section class="p-8">
+            <div class="container mx-auto">
+                <h2 class="text-2xl mb-3">En nuestro accionar hemos establecido relaciones de mutuo apoyo con diferentes instituciones de la ciudad. Con cada una de ellas buscamos llegar a los beneficiarios que más necesiten de nuestro apoyo.</h2>
+                <!-- Sección de Benefactores -->
+                <div class="pt-8"></div>
+                { benefactors.length > 0 &&
+                    <div class="section-container">
+                        <h2 class="text-2xl font-bold mb-3">Benefactores</h2>
+                        {
+                            benefactors.map((entity: Entity) => (
+                                <div class="list-item">
+                                    <div class="content">
+                                        <h3 class="text-xl font-semibold mb-4">{entity.attributes.name}</h3>
+                                    </div>
+                                    <img src={entity.attributes.image} alt={entity.attributes.name} class="service-image" />
+                                </div>
+                            ))
+                        }
+                    </div>
+                }
+                <!-- Sección de Alianzas -->
+                { alliances.length > 0 &&
+                    <div class="section-container">
+                        <h2 class="text-2xl font-bold mb-3">Alianzas</h2>
+                        {
+                            alliances.map((entity: Entity) => (
+                                <div class="list-item">
+                                    <div class="content">
+                                        <h3 class="text-xl font-semibold mb-4">{entity.attributes.name}</h3>
+                                    </div>
+                                    <img src={entity.attributes.image} alt={entity.attributes.name} class="service-image" />
+                                </div>
+                            ))
+                        }
+                    </div>
+                }
+
+                <!-- Sección de Otros -->
+                { others.length > 0 &&
+                    <div class="section-container">
+                        <h2 class="text-2xl font-bold mb-3">Otros</h2>
+                        {
+                            others.map((entity: Entity) => (
+                                <div class="list-item">
+                                    <div class="content">
+                                        <h3 class="text-xl font-semibold mb-4">{entity.attributes.name}</h3>
+                                    </div>
+                                    <img src={entity.attributes.image} alt={entity.attributes.name} class="service-image" />
+                                </div>
+                            ))
+                        }
+                    </div>
+                }
+            </div>
+        </section>
+    </main>
+</NavLayout>
+
+<style>
+    .text-purple {
+        color: #401665; /* Color morado */
+    }
+
+    .section-container {
+        padding: 2rem;
+        border: 1px solid #d9d9d9;
+        border-bottom: 1rem solid #d09696;
+        width: 60%; /* Reducing the width for a narrower design */
+        margin: 0 auto;
+        margin-bottom: 3rem;
+    }
+
+    .list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+    }
+
+    .content {
+        flex: 1;
+        padding: 0 1rem;
+    }
+
+    .service-image {
+        width: 150px;
+        height: auto;
+        margin: 0.5rem;
+    }
+</style>

@@ -1,0 +1,8 @@
+/**
+ * Estilos para el botón "Ver más".
+ * Aplica un fondo azul, texto blanco, relleno interno, bordes redondeados y transiciones suaves al pasar el cursor sobre el botón.
+ */
+ .btn-ver-mas {
+    @apply bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300;
+}
+

@@ -1,0 +1,40 @@
+/**
+ * Estilos base para el contenedor que contiene contenido markdown.
+*/
+.markdown-content {
+  /* Estilos base para el contenedor */
+}
+
+/**
+ * Estilos para las imágenes dentro del contenido markdown.
+ * Hace que la imagen sea un bloque, permitiendo el centrado horizontal.
+ * Asegura que la imagen no exceda el ancho del contenedor.
+*/
+.markdown-content img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+}
+
+/**
+ * Restablece los estilos de Tailwind para los elementos de texto y listas dentro del contenido markdown.
+ * Esto incluye párrafos, encabezados (h1-h6) y listas (ordenadas y no ordenadas).
+*/
+.markdown-content p,
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6,
+.markdown-content ul,
+.markdown-content ol,
+.markdown-content li {
+  margin: revert;
+  padding: revert;
+  font-size: revert;
+  font-weight: revert;
+  line-height: revert;
+  /* Puedes añadir más propiedades para restablecer según sea necesario */
+}

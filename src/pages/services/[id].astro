@@ -1,0 +1,61 @@
+---
+import NavLayout from '../../layouts/NavLayout.astro';
+import CardContent from '../../components/CardContent.astro';
+import type { Service } from '../../types';
+import RecentPosts from '../../components/RecentPosts.astro';
+
+export async function getStaticPaths() {
+    const response = await fetch(import.meta.env.SECRET_API_URL + '/services');
+    const services = await response.json();
+
+    return services.data.map((service: Service) => ({ params: { id: service.id.toString() } }));
+}
+
+const { id } = Astro.params;
+const response = await fetch(import.meta.env.SECRET_API_URL + `/services/${id}`);
+const service = (await response.json()).data;
+---
+
+<NavLayout title={service.attributes.title}>
+    <div class="image-container">
+        <img src={service.attributes.image} alt={service.attributes.title} class="w-full max-h-[50vh] object-cover rounded-t-lg mb-4" />
+    </div>
+    <main class="container mx-auto p-8">
+        <!-- Título y subtítulo -->
+        <h1 class="title-overlay text-5xl font-bold mb-2 text-purple">{service.attributes.title}</h1>
+        <div class="flex">
+            <main class="container mx-auto p-48 pt-8">
+                <div class="markdown prose">
+                    <CardContent content={service.attributes.content} />
+                </div>
+            </main>
+            <!-- <RecentPosts/> -->
+        </div>
+    </main>
+</NavLayout>
+
+<style>
+    .text-purple {
+        color: #401665; /* Color morado */
+    }
+
+    p {
+        text-align: center !important; /* Establece el texto alineado al centro */
+    }
+
+    .image-container {
+        position: relative;
+        max-height: 96vh; /* Altura máxima para el contenedor de la imagen */
+    }
+
+    .image-container .title-overlay {
+        position: absolute;
+        top: 20vh; /* Ajusta esto para cambiar la posición vertical del título */
+        left: 50%; /* Centra horizontalmente el título */
+        transform: translateX(-50%);
+        color: white; /* Color del título */
+        padding: 1rem; /* Espaciado alrededor del título */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra del texto */
+        /* Añade otros estilos que necesites para el título */
+    }
+</style>

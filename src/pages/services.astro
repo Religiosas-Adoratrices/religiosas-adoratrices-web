@@ -1,0 +1,80 @@
+---
+import CardContent from '../components/CardContent';
+import NavLayout from '../layouts/NavLayout.astro';
+import '../styles/services.css'
+import type { Service } from '../types'
+
+// Obtener los servicios al cargar la página
+const response = await fetch(import.meta.env.SECRET_API_URL + '/services')
+const services = (await response.json()).data
+---
+
+<NavLayout title='Productos y Servicios'>
+    <main class="container mx-auto p-8">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-bold text-purple">Productos y Servicios</h1>
+        </div>
+        <div class="container mx-auto">
+            <div class="masonry">
+                {
+                    services.length === 0 && <p>No hay productos o servicios para mostrar en este momento</p>
+                }
+                {
+                    services && services.map((service: Service) => (
+                        <div class="bg-white p-6 card rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                            <div class="card-content-wrapper">
+                                <img src={service.attributes.image} alt={service.attributes.title} class="w-full h-48 object-cover rounded-t-lg mb-4" />
+                                <h3 class="text-xl font-semibold mb-4">{service.attributes.title}</h3>
+                                <p class="text-gray-700 text-base pb-2 h-16 overflow-hidden">{service.attributes.descripton}</p>
+                            </div>
+                            <a href={`/services/${service.id}`} class="btn text-xl button-more text-white py-2 px-6 rounded absolute bottom-4 left-4">Ver más</a>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </main>
+</NavLayout>
+
+<style>
+    .text-purple {
+        color: #401665; /* Color morado */
+    }
+
+    .button-more {
+      background-color: #9d7dbb;
+    }
+
+    .button-more:hover {
+      background-color: #401665;
+    }
+
+    .masonry {
+        column-count: 3;
+        column-gap: 1rem;
+    }
+
+    .card {
+        break-inside: avoid; /* Evita que las tarjetas se dividan entre columnas */
+        margin-bottom: 1rem;
+        height: 28rem; /* Establece una altura más pequeña para todas las tarjetas */
+        position: relative; /* Posición relativa para el contenedor de la tarjeta */
+    }
+
+    .card-content-wrapper {
+        position: relative;
+    }
+
+    @media (max-width: 768px) {
+        .masonry {
+            column-count: 2; /* Menos columnas en pantallas más pequeñas */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .masonry {
+            column-count: 1; /* Una columna en pantallas muy pequeñas */
+        }
+    }
+
+</style>

@@ -1,0 +1,44 @@
+---
+import NavLayout from "../../layouts/NavLayout.astro";
+import CardContent from "../../components/CardContent.astro";
+import RecentPosts from "../../components/RecentPosts.astro";
+import type { Post } from '../../types';
+
+export async function getStaticPaths() {
+  const response = await fetch(import.meta.env.SECRET_API_URL + "/posts");
+  const posts = await response.json();
+
+  return posts.data.map((posts:Post) => ({ params: { id: posts.id.toString() } }));
+}
+
+const { id } = Astro.params;
+const response = await fetch(import.meta.env.SECRET_API_URL + `/posts/${id}`);
+const posts = (await response.json()).data;
+---
+
+<NavLayout title={posts.attributes.title}>
+  <div class="image-container">
+    <img src={posts.attributes.image} alt={posts.attributes.title} class="w-full max-h-[50vh] object-cover rounded-t-lg mb-4"/>
+  </div>
+  <main class="container mx-auto p-8">
+    <h1 class="text-5xl font-bold mb-2 text-purple">{posts.attributes.title}</h1>
+    <div class="flex">
+      <main class="container mx-auto pl-52 pr-32 pt-8">
+        <div class="markdown prose">
+          <CardContent content={posts.attributes.content} />
+        </div>
+      </main>
+      <!-- <RecentPosts /> -->
+    </div>
+  </main>
+</NavLayout>
+
+<style>
+  .text-purple {
+    color: #401665; /* Color morado */
+  }
+
+  p {
+    text-align: --webkit-center !important;
+  }
+</style>

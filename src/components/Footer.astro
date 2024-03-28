@@ -1,0 +1,88 @@
+---
+import type { ContactInfo } from "../types";
+
+const response = await fetch(import.meta.env.SECRET_API_URL + "/datacontact");
+let contactInfo: ContactInfo | undefined;
+if (response.status == 200) {
+  contactInfo = (await response.json()).data;
+}
+---
+
+<footer class="background text-white py-8 px-6">
+  <div class="container mx-auto max-w-4xl">
+    <div class="footer-content grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="footer-column">
+        <a href="#" class="text-xl font-semibold no-underline">
+          Religiosas Adoratrices Manizales
+        </a>
+        <p class="mt-2 text-sm">
+          Ofrecemos una atención integral a mujeres en riesgo de exclusión social.
+        </p>
+      </div>
+      <div class="footer-column">
+        <h5>Contacto</h5>
+        {
+          contactInfo?.attributes.direccion && (
+            <p>Dirección: {contactInfo.attributes.direccion}</p>
+          )
+        }
+        {
+          contactInfo?.attributes.telefono && (
+            <p>Teléfono: {contactInfo.attributes.telefono}</p>
+          )
+        }
+        {
+          contactInfo?.attributes.celular && (
+            <p>Celular: {contactInfo.attributes.celular}</p>
+          )
+        }
+        {
+          contactInfo?.attributes.correo && (
+            <p>Email: {contactInfo.attributes.correo}</p>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<style>
+  .background {
+    background-color: #401665;
+  }
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Alinear elementos al inicio verticalmente */
+    flex-wrap: wrap; /* Permitir que los elementos se envuelvan en pantallas más pequeñas */
+  }
+
+  .footer-column {
+    flex: 1;
+    margin-right: 20px; /* Espacio entre columnas */
+    margin-bottom: 20px; /* Espacio entre filas */
+  }
+
+  .footer-column:last-child {
+    margin-right: 0; /* Eliminar margen derecho de la última columna */
+  }
+
+  .footer-column a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .footer-column h5 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .footer-column p {
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+</style>

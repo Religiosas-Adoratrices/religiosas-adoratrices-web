@@ -1,0 +1,73 @@
+---
+import CardContent from "../components/CardContent";
+import NavLayout from "../layouts/NavLayout.astro";
+import type { Post } from "../types";
+
+// Obtener los posts al cargar la página
+const response = await fetch(import.meta.env.SECRET_API_URL + "/posts?sort=createdAt:desc");
+let posts = [];
+posts = (await response.json()).data;
+
+// Verificar si la respuesta fue exitosa
+if (response.status == 200) {
+}
+---
+
+<NavLayout title="Todas las Noticias y Actividades">
+  <main class="container mx-auto p-8">
+    <div class="container mx-auto">
+      <h1 class="text-4xl mb-3 items-start font-bold text-dark-brown">Todas las Noticias y Actividades</h1>
+    </div>
+    {
+      posts.length === 0 && (
+        <p>No hay noticias o actividades para mostrar en este momento</p>
+      )
+    }
+    {
+      posts &&
+        posts.map((post: Post) => (
+          <a href={`/posts/${post.id}`} class="w-full">
+            <div
+              class="card flex flex-col items-center shadow-md md:flex-row hover:bg-light-blue"
+            >
+              <img
+                class="object-cover w-full md:h-auto md:w-48 my-4"
+                src={post.attributes.image}
+                alt=""
+              />
+              <div class="flex flex-col justify-between p-4 leading-normal">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-dark-brown">
+                  {post.attributes.title}
+                </h5>
+                <CardContent
+                  className="mb-3 font-normal text-gray-700"
+                  content={
+                    post.attributes.descripcion.split(" ").slice(0, 25).join(" ") +
+                  "..."
+                  }
+                  client:load
+                />
+              </div>
+            </div>
+          </a>
+        ))
+    }
+  </main>
+
+</NavLayout>
+
+<style>
+  .card {
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    padding: 0 1rem;
+  }
+
+  .card:hover {
+    transform: scale(1.02);
+  }
+
+  .text-dark-brown {
+    color: #401665;
+  }
+</style>
