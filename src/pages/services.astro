@@ -1,5 +1,4 @@
 ---
-import CardContent from '../components/CardContent';
 import NavLayout from '../layouts/NavLayout.astro';
 import '../styles/services.css'
 import type { Service } from '../types'
@@ -12,7 +11,7 @@ const services = (await response.json()).data
 <NavLayout title='Productos y Servicios'>
     <main class="container mx-auto p-8">
         <div class="container mx-auto">
-            <h1 class="text-4xl font-bold text-purple">Productos y Servicios</h1>
+            <h1 class="text-4xl mb-3 items-start font-bold text-purple">Productos y Servicios</h1>
         </div>
         <div class="container mx-auto">
             <div class="masonry">
