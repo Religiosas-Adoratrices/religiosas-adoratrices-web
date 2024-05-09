@@ -17,7 +17,7 @@ const url = Astro.url.pathname
         <div>
           <a class="flex items-center" href="/">
               <img src="https://i.postimg.cc/Ls4S4GCW/divinas-adoratrices-logo.jpg" alt="Logo de Divinas Adoratrices" class="h-12 mr-4" />
-              <span class="text-2xl font-bold no-underline hover:text-dark-brown">Religiosas Adoratrices Manizales</span>
+              <span class="text-2xl font-bold no-underline hover:text-dark-brown">Centro de Orientación y Formación Religiosas Adoratrices Manizales</span>
           </a>
       </div>
       <div class="flex space-x-4">
@@ -42,12 +42,12 @@ const url = Astro.url.pathname
                 {item.subItems ? (
                   <div>
                     <a class="cursor-pointer select-none hover:bg-light-brown px-3 py-2 rounded">
-                      {item.title} 
+                      {item.title}
                       <span style="font-size: 0.8em; margin-left: 5px;">▼</span>
                     </a>
                     <ul class="absolute left-0 mt-1 w-max bg-light-cream border border-brown rounded shadow-lg group-hover:block hidden">
                       {item.subItems.map(subItem => (
-                        <li class="py-2"> 
+                        <li class="py-2">
                           <a href={subItem.link} class={`hover:bg-light-brown px-3 py-2 rounded ${subItem.link?.includes(url) ? 'active-section' : ''}`}>{subItem.title}</a>
                         </li>
                       ))}

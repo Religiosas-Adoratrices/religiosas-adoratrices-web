@@ -5,7 +5,8 @@ import type { Service } from '../types'
 
 // Obtener los servicios al cargar la página
 const response = await fetch(import.meta.env.SECRET_API_URL + '/services')
-const services = (await response.json()).data
+let services = [];
+services = (await response.json()).data
 ---
 
 <NavLayout title='Productos y Servicios'>
@@ -13,25 +14,35 @@ const services = (await response.json()).data
         <div class="container mx-auto">
             <h1 class="text-4xl mb-3 items-start font-bold text-purple">Productos y Servicios</h1>
         </div>
-        <div class="container mx-auto">
-            <div class="masonry">
-                {
-                    services.length === 0 && <p>No hay productos o servicios para mostrar en este momento</p>
-                }
-                {
-                    services && services.map((service: Service) => (
-                        <div class="bg-white p-6 card rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                            <div class="card-content-wrapper">
-                                <img src={service.attributes.image} alt={service.attributes.title} class="w-full h-48 object-cover rounded-t-lg mb-4" />
-                                <h3 class="text-xl font-semibold mb-4">{service.attributes.title}</h3>
-                                <p class="text-gray-700 text-base pb-2 h-16 overflow-hidden">{service.attributes.descripton}</p>
-                            </div>
-                            <a href={`/services/${service.id}`} class="btn text-xl button-more text-white py-2 px-6 rounded absolute bottom-4 left-4">Ver más</a>
-                        </div>
-                    ))
-                }
-            </div>
-        </div>
+        {
+            services.length === 0 && (
+              <p>No hay productos ni servicios para mostrar en este momento</p>
+            )
+        }
+        {
+            services &&
+            services.map((service: Service) => (
+                <a href={`/services/${service.id}`} class="w-full">
+                  <div
+                    class="card flex flex-col items-center shadow-md md:flex-row hover:bg-light-blue"
+                  >
+                    <img
+                      class="object-cover w-full md:h-auto md:w-48 my-4"
+                      src={service.attributes.image}
+                      alt=""
+                    />
+                    <div class="flex flex-col justify-between p-4 leading-normal">
+                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-purple">
+                        {service.attributes.title}
+                      </h5>
+                      <h5 class="mb-3 font-normal text-gray-700 overflow-hidden" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;">
+                        {service.attributes.content}
+                      </h5>
+                    </div>
+                  </div>
+                </a>
+            ))
+        }
     </main>
 </NavLayout>
 
@@ -54,26 +65,17 @@ const services = (await response.json()).data
     }
 
     .card {
-        break-inside: avoid; /* Evita que las tarjetas se dividan entre columnas */
-        margin-bottom: 1rem;
-        height: 28rem; /* Establece una altura más pequeña para todas las tarjetas */
-        position: relative; /* Posición relativa para el contenedor de la tarjeta */
+        border-radius: 1rem;
+        transition: all 0.3s ease;
+        padding: 0 1rem;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
     }
 
     .card-content-wrapper {
         position: relative;
-    }
-
-    @media (max-width: 768px) {
-        .masonry {
-            column-count: 2; /* Menos columnas en pantallas más pequeñas */
-        }
-    }
-
-    @media (max-width: 480px) {
-        .masonry {
-            column-count: 1; /* Una columna en pantallas muy pequeñas */
-        }
     }
 
 </style>
